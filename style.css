@@ -1,0 +1,8 @@
+body						{ margin: 0; padding: 0; font-family: "Lucida Grande", Helvetica, Arial, sans-serif; }
+
+#page						{ width: 80%; max-width: 800px; margin: 30px auto; }
+#page h1					{ font-family: Georgia, serif; color: #930; font-weight: normal; }
+
+@media screen and (max-width: 700px) {
+	#page							{ width: 95%; margin: 10px auto; }
+}

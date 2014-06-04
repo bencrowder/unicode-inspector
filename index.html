@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+	<title>Unicode Inspector</title>
+	<!-- Based on https://gist.github.com/addyosmani/d1f3ca715ac902788c2d -->
+
+	<style type="text/css" media="screen">
+		body			{ padding: 0; margin: 0; }
+		*				{ -moz-box-sizing: border-box; box-sizing: border-box; } 
+
+		textarea		{ font: 2rem/1.5 monospace; width: 100%; margin: 0px; padding: 4rem; border: none; height: calc(100% - 300px); position: absolute; top: 0; left: 0; right: 0; }
+		textarea:focus	{ outline: none; }
+
+		#output			{ font: 1.2rem/1.5 monospace; width: 100%; height: 300px; margin: 0px auto; padding: 2rem 4rem; color: #fff; background: #20384b; position: absolute; bottom: 0; overflow-y: scroll; }
+		#output > span	{ background: #38556b; padding: 4px 8px 4px 0; display: inline-block; border-radius: 3px; margin-bottom: 3px; line-height: 1em; }
+		#output > span span	{ background: #0d2231; margin-right: 8px; padding: 4px 8px; border-radius: 3px 0 0 3px; line-height: 1em; }
+
+		/* Media queries */
+		@media screen and (max-width: 400px) {
+			textarea	{ font-size: 1.4rem; line-height: 1.5em; padding: 2rem; height: calc(100% - 350px); }
+			#output		{ padding: 1rem 2rem; font-size: 1.1rem; height: 350px; }
+		}
+		
+	</style>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="punycode.min.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			$("textarea").focus();
+
+			$("textarea").on("input", function() {
+				var input = $("textarea").val();
+				var hexList = punycode.ucs2.decode(input);
+				var outputList = [];
+				for (var i=0; i<hexList.length; i++) {
+					// Zero-pad it
+					var hex = hexList[i].toString(16).toUpperCase();
+					for (var j=hex.length; j<4; j++) {
+						hex = '0' + hex;
+					}
+
+					// Add it
+					var html = "<span>";
+					var character = String.fromCharCode(hexList[i]);
+
+					newLine = false;
+
+					switch (character) {
+						case "\n":
+							character = '\\n';
+							newLine = true;
+							break;
+						case " ":
+							character = "&nbsp;";
+							break;
+					}
+
+					html += "<span>" + character + "</span>";
+					html += "U+" + hex;
+					html += "</span>";
+					if (newLine) {
+						html += "<br/><br/>";
+					}
+
+					outputList.push(html);
+				}
+				$("#output").html(outputList.join(" "));
+			});
+		});
+	</script>
+
+	<link rel="shortcut icon" href="favicon.png" />
+</head>
+
+<body>
+
+<section id="page">
+	<textarea></textarea>
+
+	<div id="output">
+	</div>
+</section>
+
+</body>
+</html>

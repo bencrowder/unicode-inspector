@@ -1,4 +1,3 @@
-unicode-inspector
-=================
+## Unicode Inspector
 
 Web app for inspecting Unicode text.
