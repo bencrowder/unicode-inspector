@@ -31,6 +31,8 @@
 
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
+      var fromCodePoint = String.fromCodePoint || String.fromCharCode;
+
 			$("textarea").focus();
 
 			$("textarea").on("input", function() {
@@ -46,7 +48,7 @@
 
 					// Add it
 					var html = "<span>";
-					var character = String.fromCharCode(hexList[i]);
+					var character = fromCodePoint(hexList[i]);
 
 					newLine = false;
 
